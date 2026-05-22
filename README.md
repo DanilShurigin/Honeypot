@@ -16,3 +16,6 @@ cd Honeypot
 docker compose up --build -d
 docker-compose logs -f
 ```
+## Сканирование
+
+Адрес контейнера: `172.30.0.10`.
