@@ -1,4 +1,4 @@
-# MIT Honeypot Lab
+# Honeypot
 
 Honeypot для обнаружения сетевого сканирования.
 
