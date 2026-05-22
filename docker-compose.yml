@@ -1,0 +1,43 @@
+services:
+  honeypot:
+    build: .
+    container_name: honeypot-lab
+    hostname: honeypot
+    restart: unless-stopped
+    
+    cap_add:
+      - NET_RAW        # Сырые сокеты
+    
+    ports:
+      - "2222:2222"
+      - "2223:2223"
+      - "8080:8080"
+    
+    networks:
+      honeypot-net:
+        ipv4_address: 172.30.0.10
+    
+    environment:
+      - PYTHONUNBUFFERED=1
+      - HONEYPOT_MODE=production
+      - BIND_HOST=0.0.0.0
+    
+    healthcheck:
+      test: ["CMD", "netstat", "-tlnp", "|", "grep", "2222"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    
+    # Ограничение ресурсов
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M
+
+networks:
+  honeypot-net:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.30.0.0/24
